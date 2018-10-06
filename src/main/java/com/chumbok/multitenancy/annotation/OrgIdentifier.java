@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to enable tenanting in JPA via annotation configuration.
+ * Org column identifier annotation.
  */
 @Inherited
 @Documented

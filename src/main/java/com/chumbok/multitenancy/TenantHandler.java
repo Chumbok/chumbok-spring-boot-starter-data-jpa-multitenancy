@@ -1,49 +1,49 @@
 package com.chumbok.multitenancy;
 
 import com.chumbok.multitenancy.entity.TenantAwareEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.util.Assert;
 
-import java.util.Objects;
 
-
+/**
+ * TenantHandler populate Org/Tenant fields of an Entity.
+ */
+@Slf4j
 public class TenantHandler {
 
-    private static MappingContext mappingContext;
     private static TenantAware tenantAware;
 
+    /**
+     * Sets tenant aware when context is loaded.
+     */
     @Autowired
-    public void tenantHandler(MappingContext mappingContext) {
-
-        this.mappingContext = mappingContext;
-//MappingAuditableBeanWrapperFactory
-//        this.createdByProperty = Optional.ofNullable(entity.getPersistentProperty(CreatedBy.class));
-//        this.createdDateProperty = Optional.ofNullable(entity.getPersistentProperty(CreatedDate.class));
-//        this.lastModifiedByProperty = Optional.ofNullable(entity.getPersistentProperty(LastModifiedBy.class));
-//        this.lastModifiedDateProperty = Optional.ofNullable(entity.getPersistentProperty(LastModifiedDate.class));
-
-    }
-
-    public void populateTenantFields(Object obj) {
-
-        System.out.println("---?" + mappingContext.getPersistentEntities());
-        System.out.println("");
-
-        //JpaPersistentEntityImpl
-
-        TenantAwareEntity baseTenantEntity = (TenantAwareEntity) obj;
-        baseTenantEntity.setOrg((String) tenantAware.getOrg().get());
-        baseTenantEntity.setTenant((String) tenantAware.getTenant().get());
-        System.out.println("HELLO!" + Objects.toString(obj));
-    }
-
-
-    @Autowired
-    public void setTenantAware(TenantAware<?> tenantAware) {
+    public void tenantAware(TenantAware<?> tenantAware) {
         Assert.notNull(tenantAware, "TenantAware must not be null!");
         this.tenantAware = tenantAware;
     }
 
+    /**
+     * Populate Org/Tenant fields.
+     *
+     * @param obj the obj
+     */
+    protected void populateOrgTenantFields(Object obj) {
+
+        if (tenantAware == null) {
+            log.debug("tenantAware is set to null in TenantHandler.");
+            return;
+        }
+
+        if (obj instanceof TenantAwareEntity) {
+            TenantAwareEntity tenantAwareEntity = (TenantAwareEntity) obj;
+            tenantAwareEntity.setOrg(tenantAware.getOrg().get());
+            tenantAwareEntity.setTenant(tenantAware.getTenant().get());
+            log.debug("Persistent entity's Org/Tenant fields are populated.");
+        } else {
+            log.debug("Persistent entity did not implement TenantAwareEntity.");
+        }
+
+    }
 
 }

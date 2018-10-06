@@ -6,12 +6,19 @@ import org.springframework.util.Assert;
 
 import javax.persistence.PrePersist;
 
+/**
+ * TenantEntityListener triggers when entity manager about to persist data.
+ * A hook to populate Org/Tenant fields.
+ */
 public class TenantEntityListener {
 
     private static TenantHandler tenantHandler;
 
+    /**
+     * Sets tenant handler when context is loaded.
+     */
     @Autowired
-    public void setTenantHandler(TenantHandler tenantHandler) {
+    public void tenantHandler(TenantHandler tenantHandler) {
         Assert.notNull(tenantHandler, "TenantHandler must not be null!");
         this.tenantHandler = tenantHandler;
     }
@@ -20,17 +27,14 @@ public class TenantEntityListener {
      * Sets org and tenant identifier on the target object in case it implements {@link TenantAwareEntity} on
      * persist events.
      *
-     * @param target
+     * @param target the target
      */
     @PrePersist
     public void populateOrgTenantField(Object target) {
-
         Assert.notNull(target, "Entity must not be null!");
-
         if (tenantHandler != null) {
-            tenantHandler.populateTenantFields(target);
+            tenantHandler.populateOrgTenantFields(target);
         }
-
     }
 
 }

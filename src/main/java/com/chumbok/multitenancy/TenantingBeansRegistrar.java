@@ -5,6 +5,10 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
+/**
+ * Use of @EnableJpaTenanting annotation triggers this class.
+ * Create TenantEntityListener and TenantHandler bean definitions.
+ */
 public class TenantingBeansRegistrar implements ImportBeanDefinitionRegistrar {
 
     @Override
