@@ -1,6 +1,6 @@
-package com.chumbok.multitenancy;
+package com.chumbok.multitenancy.entity;
 
-import com.chumbok.multitenancy.entity.TenantAwareEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -10,8 +10,13 @@ import javax.persistence.PrePersist;
  * TenantEntityListener triggers when entity manager about to persist data.
  * A hook to populate Org/Tenant fields.
  */
+@Slf4j
 public class TenantEntityListener {
 
+    /**
+     * Note: The reason behind tenantHandler being static is TenantEntityListener bean loads before TenantHandler.
+     * The only way to inject is to make it static.
+     */
     private static TenantHandler tenantHandler;
 
     /**
@@ -27,13 +32,17 @@ public class TenantEntityListener {
      * Sets org and tenant identifier on the target object in case it implements {@link TenantAwareEntity} on
      * persist events.
      *
-     * @param target the target
+     * @param target the entity class
      */
     @PrePersist
     public void populateOrgTenantField(Object target) {
+
         Assert.notNull(target, "Entity must not be null!");
+
         if (tenantHandler != null) {
             tenantHandler.populateOrgTenantFields(target);
+        } else {
+            log.error("tenantHandler is set to null in com.chumbok.multitenancy.TenantEntityListener.");
         }
     }
 

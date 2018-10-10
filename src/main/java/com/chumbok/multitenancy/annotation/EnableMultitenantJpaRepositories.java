@@ -1,7 +1,9 @@
 package com.chumbok.multitenancy.annotation;
 
-import com.chumbok.multitenancy.TenantingBeansRegistrar;
+import com.chumbok.multitenancy.annotation.processor.TenantingBeansRegistrar;
+import com.chumbok.multitenancy.repository.TenantAwareSimpleJpaRepository;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -17,7 +19,8 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@EnableJpaRepositories(repositoryBaseClass = TenantAwareSimpleJpaRepository.class)
 @Import(TenantingBeansRegistrar.class)
-public @interface EnableJpaTenanting {
+public @interface EnableMultitenantJpaRepositories {
 
 }

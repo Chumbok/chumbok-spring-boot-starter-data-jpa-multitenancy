@@ -1,13 +1,17 @@
-package com.chumbok.multitenancy;
+package com.chumbok.multitenancy.annotation.processor;
 
+import com.chumbok.multitenancy.aspect.EnableOrgTenantFiltersAspect;
+import com.chumbok.multitenancy.entity.TenantEntityListener;
+import com.chumbok.multitenancy.entity.TenantHandler;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * Use of @EnableJpaTenanting annotation triggers this class.
- * Create TenantEntityListener and TenantHandler bean definitions.
+ * Use of @EnableMultitenantJpaRepositories annotation triggers this class.
+ * Here in this class, all necessary bean definitions are created that need to be initialized.
+ * Create TenantEntityListener, TenantHandler and EnableOrgTenantFiltersAspect bean definitions.
  */
 public class TenantingBeansRegistrar implements ImportBeanDefinitionRegistrar {
 
@@ -21,6 +25,10 @@ public class TenantingBeansRegistrar implements ImportBeanDefinitionRegistrar {
         GenericBeanDefinition tenantHandlerBeanDefinition = new GenericBeanDefinition();
         tenantHandlerBeanDefinition.setBeanClass(TenantHandler.class);
         registry.registerBeanDefinition("tenantHandler", tenantHandlerBeanDefinition);
+
+        GenericBeanDefinition tenantAspectBeanDefinition = new GenericBeanDefinition();
+        tenantAspectBeanDefinition.setBeanClass(EnableOrgTenantFiltersAspect.class);
+        registry.registerBeanDefinition("tenantAspect", tenantAspectBeanDefinition);
 
     }
 

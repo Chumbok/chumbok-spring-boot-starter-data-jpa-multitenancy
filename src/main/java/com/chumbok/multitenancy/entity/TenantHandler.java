@@ -1,6 +1,8 @@
-package com.chumbok.multitenancy;
+package com.chumbok.multitenancy.entity;
 
+import com.chumbok.multitenancy.TenantAware;
 import com.chumbok.multitenancy.entity.TenantAwareEntity;
+import com.chumbok.multitenancy.exception.TenantAwareBeanNotFound;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -12,6 +14,10 @@ import org.springframework.util.Assert;
 @Slf4j
 public class TenantHandler {
 
+    /**
+     * Note: The reason behind tenantAware being static is TenantHandler bean loads before TenantAware.
+     * The only way to inject is to make it static.
+     */
     private static TenantAware tenantAware;
 
     /**
@@ -31,7 +37,17 @@ public class TenantHandler {
     protected void populateOrgTenantFields(Object obj) {
 
         if (tenantAware == null) {
-            log.debug("tenantAware is set to null in TenantHandler.");
+            log.error("tenantAware is set to null in TenantHandler.");
+            throw new TenantAwareBeanNotFound("tenantAware bean is not defined.");
+        }
+
+        if (!tenantAware.getOrg().isPresent()) {
+            log.error("tenantAware org is set to null in TenantHandler.");
+            return;
+        }
+
+        if (!tenantAware.getTenant().isPresent()) {
+            log.error("tenantAware tenant is set to null in TenantHandler.");
             return;
         }
 
@@ -39,9 +55,9 @@ public class TenantHandler {
             TenantAwareEntity tenantAwareEntity = (TenantAwareEntity) obj;
             tenantAwareEntity.setOrg(tenantAware.getOrg().get());
             tenantAwareEntity.setTenant(tenantAware.getTenant().get());
-            log.debug("Persistent entity's Org/Tenant fields are populated.");
+            log.error("Persistent entity's Org/Tenant fields are populated.");
         } else {
-            log.debug("Persistent entity did not implement TenantAwareEntity.");
+            log.error("Persistent entity did not implement TenantAwareEntity.");
         }
 
     }
