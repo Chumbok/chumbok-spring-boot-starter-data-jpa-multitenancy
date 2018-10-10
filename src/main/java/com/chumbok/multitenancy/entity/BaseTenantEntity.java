@@ -1,7 +1,6 @@
 package com.chumbok.multitenancy.entity;
 
 
-import com.chumbok.multitenancy.TenantEntityListener;
 import com.chumbok.multitenancy.annotation.OrgIdentifier;
 import com.chumbok.multitenancy.annotation.TenantIdentifier;
 import lombok.Getter;
@@ -14,8 +13,6 @@ import org.hibernate.annotations.ParamDef;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -24,12 +21,13 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @FilterDefs({
-        @FilterDef(name = "orgFilter", parameters = @ParamDef(name = "org", type = "string"), defaultCondition = "org = :org"),
-        @FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenant", type = "string"), defaultCondition = "tenant = :tenant")
+        @FilterDef(name = "orgFilter", parameters = @ParamDef(name = "org", type = "string")),
+        @FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenant", type = "string"))
 })
-@Filters({@Filter(name = "orgFilter"), @Filter(name = "tenantFilter")})
+@Filters({@Filter(name = "orgFilter", condition = "org = :org"),
+        @Filter(name = "tenantFilter", condition = "tenant = :tenant")
+})
 @EntityListeners(TenantEntityListener.class)
 public abstract class BaseTenantEntity implements TenantAwareEntity<String> {
 
@@ -39,14 +37,14 @@ public abstract class BaseTenantEntity implements TenantAwareEntity<String> {
      * Org of persisted entity.
      */
     @OrgIdentifier
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     protected String org;
 
     /**
      * Tenant of persisted entity.
      */
     @TenantIdentifier
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     protected String tenant;
 
 }
