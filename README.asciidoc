@@ -1,0 +1,37 @@
+# Chumbok Spring Boot Data JPA Multitenancy
+Single database schema multitenancy solution for Spring Data Jpa.
+
+## How to use
+TODO: Release the library.
+
+## How to use this library
+- Step 1: Use @EnableMultitenantJpaRepositories annotation instead of @EnableJpaRepositories
+- Step 2: Create TenantAware bean, see example below.
+- Step 3: To make sure it's working, check for "tenantEntityListener, tenantHandler and tenantAspect bean
+definitions are created." and "orgFilter and tenantFilter is enabled." in the log.
+
+### Example configuration
+```
+@Configuration
+@EnableMultitenantJpaRepositories
+public class JpaConfig {
+
+    @Bean
+    public TenantAware<String> tenantAware() {
+        return new TenantAwareImpl();
+    }
+
+    static class TenantAwareImpl implements TenantAware<String> {
+
+        @Override
+        public Optional<String> getOrg() {
+            return Optional.of("TestOrg");
+        }
+
+        @Override
+        public Optional<String> getTenant() {
+            return Optional.of("TestTenant");
+        }
+    }
+}
+```
