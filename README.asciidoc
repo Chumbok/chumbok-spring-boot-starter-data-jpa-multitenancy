@@ -1,16 +1,49 @@
 # Chumbok Spring Boot Data JPA Multitenancy
+
 Single database schema multitenancy solution for Spring Data Jpa.
 
+
 ## How to use
+
 TODO: Release the library.
 
+
 ## How to use this library
-- Step 1: Use @EnableMultitenantJpaRepositories annotation instead of @EnableJpaRepositories
-- Step 2: Create TenantAware bean, see example below.
-- Step 3: To make sure it's working, check for "tenantEntityListener, tenantHandler and tenantAspect bean
+
+- Step 1: Extend entity from BaseTenantEntity class.
+- Step 2: Use @EnableMultitenantJpaRepositories annotation instead of @EnableJpaRepositories.
+- Step 3: Create TenantAware bean, see example below.
+- Step 4: To make sure it's working, check for "tenantEntityListener, tenantHandler and tenantAspect bean
 definitions are created." and "orgFilter and tenantFilter is enabled." in the log.
+- Final step: See following example.
+
+
+### Example Entity
+
+```
+import com.chumbok.multitenancy.entity.BaseTenantEntity;
+import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Data
+@Entity
+public class Hello extends BaseTenantEntity {
+
+    @Id
+    private String id;
+
+    @Column
+    private String message;
+
+}
+```
+
 
 ### Example configuration
+
 ```
 @Configuration
 @EnableMultitenantJpaRepositories
@@ -33,5 +66,20 @@ public class JpaConfig {
             return Optional.of("TestTenant");
         }
     }
+}
+```
+
+
+### Example repository
+
+```
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface HelloRepository extends JpaRepository<Hello, String> {
+
 }
 ```
