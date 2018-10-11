@@ -1,15 +1,10 @@
+### Common
 
 spring:
-  profiles: it
-  h2:
-    console:
-      enabled: true
-      path: /h2
-  datasource:
-    url: ${DB_URL:jdbc:h2:mem:multitenant;DB_CLOSE_ON_EXIT=TRUE;MODE=MYSQL}
-    username: sa
-    password:
-    driver-class: org.h2.Driver
+  application:
+    name: MultitenancyTest
+  profiles:
+    active: it
   jpa:
     show-sql: true
     generate-ddl: true
@@ -26,3 +21,17 @@ logging:
     org.hibernate:
       SQL: DEBUG
       type.descriptor.sql.BasicBinder: TRACE
+
+---
+
+spring:
+  profiles: it
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:multitenancytest;DB_CLOSE_ON_EXIT=TRUE;MODE=MYSQL}
+    username: sa
+    password:
+    driver-class: org.h2.Driver
