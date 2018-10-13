@@ -5,7 +5,24 @@ Single database schema multitenancy solution for Spring Data Jpa.
 
 ## How to use
 
-TODO: Release the library.
+Add following dependency in your pom.xml
+```
+<dependency>
+    <groupId>com.chumbok</groupId>
+    <artifactId>chumbok-spring-boot-starter-data-jpa-multitenancy</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+Add add repository:
+```
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
 
 
 ## How to use this library
