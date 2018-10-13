@@ -17,10 +17,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,9 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("it")
 public class DataJpaMultitenancyIT {
-
-    @Autowired
-    private HelloRepository helloRepository;
 
     @Autowired
     private TenantAware tenantAware;
@@ -163,26 +158,6 @@ public class DataJpaMultitenancyIT {
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.message").value("Hello[User7UUID] does not exist."))
                 .andDo(print());
-
-    }
-
-    @Test
-    public void shouldPopulatedOrgAndTenantFields() {
-
-        // Given
-
-        mimicUser("Test");
-
-        Hello unsaved = new Hello();
-        unsaved.setId("uuid" + UUID.randomUUID());
-        unsaved.setMessage("sampleMessage");
-
-        // When
-        Hello saved = helloRepository.saveAndFlush(unsaved);
-
-        // Then
-        assertEquals("TestOrg", saved.getOrg());
-        assertEquals("TestTenant", saved.getTenant());
 
     }
 
