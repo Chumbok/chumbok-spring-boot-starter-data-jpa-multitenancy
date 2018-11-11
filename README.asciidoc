@@ -10,7 +10,7 @@ Add following dependency in your pom.xml
 <dependency>
     <groupId>com.chumbok</groupId>
     <artifactId>chumbok-spring-boot-starter-data-jpa-multitenancy</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -28,7 +28,8 @@ Add add repository:
 ## How to use this library
 
 - Step 1: Extend entity from BaseTenantEntity class.
-- Step 2: Use @EnableMultitenantJpaRepositories annotation instead of @EnableJpaRepositories.
+- Step 2: Use @EnableMultitenantJpaRepositories annotation instead of @EnableJpaRepositories. Make use you use
+@EnableMultitenantJpaRepositories in your project base package. Otherwise repositories will not be scanned.
 - Step 3: Create TenantAware bean, see example below.
 - Step 4: To make sure it's working, check for "tenantEntityListener, tenantHandler and tenantAspect bean
 definitions are created." and "orgFilter and tenantFilter is enabled." in the log.
@@ -63,8 +64,10 @@ public class Hello extends BaseTenantEntity {
 
 ```
 @Configuration
+// Make sure @EnableMultitenantJpaRepositories in class located in project base package.
+// Maybe use in Application.java class if it located in project base package.
 @EnableMultitenantJpaRepositories
-public class JpaConfig {
+public class MultiTenantJpaConfig {
 
     @Bean
     public TenantAware<String> tenantAware() {

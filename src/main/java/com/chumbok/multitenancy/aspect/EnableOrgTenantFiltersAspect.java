@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.hibernate.Filter;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 
@@ -22,14 +24,18 @@ public class EnableOrgTenantFiltersAspect {
     private static final String ORG_FILTER = "orgFilter";
     private static final String TENANT_FILTER = "tenantFilter";
 
-    private TenantAware tenantAware;
+    /**
+     * Note: The reason behind tenantAware being static is TenantHandler bean loads before TenantAware.
+     * The only way to inject is to make it static.
+     */
+    private static TenantAware tenantAware;
 
     /**
-     * Instantiates a new Enable org tenant filters aspect with TenantAware.
-     *
-     * @param tenantAware the tenant aware
+     * Sets tenant aware when context is loaded.
      */
-    public EnableOrgTenantFiltersAspect(TenantAware<?> tenantAware) {
+    @Autowired
+    public void tenantAware(TenantAware<?> tenantAware) {
+        Assert.notNull(tenantAware, "TenantAware must not be null!");
         this.tenantAware = tenantAware;
     }
 
