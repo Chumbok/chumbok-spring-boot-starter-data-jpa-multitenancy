@@ -1,22 +1,17 @@
 package com.chumbok.multitenancy;
 
-import com.chumbok.multitenancy.annotation.EnableMultitenantJpaRepositories;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -165,32 +160,5 @@ public class DataJpaMultitenancyIT {
         ((JpaTenantTestConfig.TenantAwareImpl) tenantAware).userIdentifier(user);
     }
 
-    @Configuration
-    @EnableMultitenantJpaRepositories
-    static class JpaTenantTestConfig {
 
-        @Bean
-        public TenantAware<String> tenantAware() {
-            return new TenantAwareImpl();
-        }
-
-        static class TenantAwareImpl implements TenantAware<String> {
-
-            private String user;
-
-            public void userIdentifier(String user) {
-                this.user = user;
-            }
-
-            @Override
-            public Optional<String> getOrg() {
-                return Optional.of(user + "Org");
-            }
-
-            @Override
-            public Optional<String> getTenant() {
-                return Optional.of(user + "Tenant");
-            }
-        }
-    }
 }

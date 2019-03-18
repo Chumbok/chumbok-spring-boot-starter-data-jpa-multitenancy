@@ -6,12 +6,12 @@
     <parent>
         <groupId>com.chumbok</groupId>
         <artifactId>chumbok-starter-parent</artifactId>
-        <version>3.0.0</version>
+        <version>5.0.0</version>
     </parent>
 
     <groupId>com.chumbok</groupId>
     <artifactId>chumbok-spring-boot-starter-data-jpa-multitenancy</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>Chumbok Spring Boot Starter Data JPA Multitenancy</name>
@@ -49,6 +49,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
             <scope>test</scope>
         </dependency>
 

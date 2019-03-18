@@ -104,3 +104,5 @@ target/test-classes/application.yml
 
 
 chumbok-spring-boot-starter-data-jpa-multitenancy.iml
+chumbok-spring-boot-starter-data-jpa-multitenancy.ipr
+target/*
