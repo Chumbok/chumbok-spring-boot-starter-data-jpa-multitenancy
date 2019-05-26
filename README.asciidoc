@@ -3,7 +3,7 @@
 Single database schema multitenancy solution for Spring Data Jpa.
 
 image:https://travis-ci.org/ChumbokIT/chumbok-spring-boot-starter-data-jpa-multitenancy.svg?branch=master["Build Status", link="https://travis-ci.org/ChumbokIT/chumbok-spring-boot-starter-data-jpa-multitenancy"]
-image:https://ci.appveyor.com/api/projects/status/f8fschqk14s4jofc?svg=true["Appveyor Status", link="https://ci.appveyor.com/project/ChumbokIT/chumbok-spring-boot-starter-data-jpa-multitenancy"]
+image:https://ci.appveyor.com/api/projects/status/f8fschqk14s4jofc?svg=true["Appveyor Status", link="https://ci.appveyor.com/project/mmahmoodictbd/chumbok-spring-boot-starter-data-jpa-multitenancy"]
 image:https://codecov.io/gh/ChumbokIT/chumbok-spring-boot-starter-data-jpa-multitenancy/branch/master/graph/badge.svg["Code Coverage", link="https://codecov.io/gh/ChumbokIT/chumbok-spring-boot-starter-data-jpa-multitenancy"]
 image:https://img.shields.io/github/license/ChumbokIT/chumbok-spring-boot-starter-data-jpa-multitenancy.svg["LICENSE", link="https://github.com/ChumbokIT/chumbok-spring-boot-starter-data-jpa-multitenancy/blob/master/LICENSE"]
 
