@@ -1,9 +1,21 @@
 language: java
+
 sudo: false
-script: mvn clean install
+
+install: mvn -q dependency:resolve
+
+script:
+- mvn -q -B -V install -DskipTests=true -Dmaven.javadoc.skip=true 1> /dev/null
+- mvn -q -B test 1> /dev/null
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
 addons:
   apt:
     packages:
       - oracle-java8-installer
+
+cache:
+  directories:
+  - $HOME/.m2
